@@ -38,6 +38,44 @@
         "Standard_RAGRS",
         "Premium_LRS"
       ]
+    },
+    "OtamesiArmSQLD99Name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "OtamesiArmSQLD99Collation": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "OtamesiArmSQLD99Edition": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "Standard",
+        "Premium"
+      ]
+    },
+    "OtamesiArmSQLD99RequestedServiceObjectiveName": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "S0",
+        "S1",
+        "S2",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "metadata": {
+        "description": "Describes the performance level for Edition"
+      }
+    },
+    "serverName": {
+      "type": "string",
+      "defaultValue": "jng0m71t7w"
     }
   },
   "variables": {
@@ -152,6 +190,22 @@
         "clientAffinityEnabled": false,
         "serverFarmId": "[concat('/subscriptions/', variables('subscriptionId'),'/resourcegroups/', variables('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('OtamesiArmPlan99Name'))]",
         "hostingEnvironment": "[variables('hostingEnvironment')]"
+      }
+    },
+    {
+      "name": "[concat(parameters('serverName'), '/', parameters('OtamesiArmSQLD99Name'))]",
+      "type": "Microsoft.Sql/servers/databases",
+      "location": "japanwest",
+      "apiVersion": "2014-04-01-preview",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "OtamesiArmSQLD99"
+      },
+      "properties": {
+        "collation": "[parameters('OtamesiArmSQLD99Collation')]",
+        "edition": "[parameters('OtamesiArmSQLD99Edition')]",
+        "maxSizeBytes": "2147483648",
+        "requestedServiceObjectiveName": "[parameters('OtamesiArmSQLD99RequestedServiceObjectiveName')]"
       }
     }
   ]

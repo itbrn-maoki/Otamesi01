@@ -8,5 +8,10 @@ namespace StandardLib
         {
             Trace.TraceInformation("Otamesi no trace.");
         }
+
+        public string Itb2()
+        {
+            return "It Brain";
+        }
     }
 }
