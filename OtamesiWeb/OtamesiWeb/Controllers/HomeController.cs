@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OtamesiWeb.Models;
+using StandardLib;
+using System.Diagnostics;
 
 namespace OtamesiWeb.Controllers
 {
@@ -12,6 +9,7 @@ namespace OtamesiWeb.Controllers
     {
         public IActionResult Index()
         {
+            new Class1().Itb();
             return View();
         }
 

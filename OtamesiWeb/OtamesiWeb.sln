@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtamesiWeb", "OtamesiWeb\Ot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtamesiFunction", "OtamesiFunction\OtamesiFunction.csproj", "{DDE8C5AD-2937-4EE4-9A7C-26996C5EDF50}"
 EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "AzureResourceGroup1", "AzureResourceGroup1\AzureResourceGroup1.deployproj", "{81F48B73-9569-4D1B-9EEE-4A7831EC1DA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandardLib", "StandardLib\StandardLib.csproj", "{62CCCD21-3A4D-4AAF-9F52-CBCEFEDE189E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{DDE8C5AD-2937-4EE4-9A7C-26996C5EDF50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDE8C5AD-2937-4EE4-9A7C-26996C5EDF50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDE8C5AD-2937-4EE4-9A7C-26996C5EDF50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81F48B73-9569-4D1B-9EEE-4A7831EC1DA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81F48B73-9569-4D1B-9EEE-4A7831EC1DA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81F48B73-9569-4D1B-9EEE-4A7831EC1DA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81F48B73-9569-4D1B-9EEE-4A7831EC1DA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62CCCD21-3A4D-4AAF-9F52-CBCEFEDE189E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62CCCD21-3A4D-4AAF-9F52-CBCEFEDE189E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62CCCD21-3A4D-4AAF-9F52-CBCEFEDE189E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62CCCD21-3A4D-4AAF-9F52-CBCEFEDE189E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

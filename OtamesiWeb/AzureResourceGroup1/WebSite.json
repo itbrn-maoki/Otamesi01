@@ -1,0 +1,158 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "OtamesiArmPlan99Name": {
+      "type": "string",
+      "defaultValue": "OtamesiArmPlan99",
+      "minLength": 1
+    },
+    "OtamesiArmPlan99SkuName": {
+      "type": "string",
+      "defaultValue": "B1",
+      "allowedValues": [
+        "F1",
+        "D1",
+        "B1",
+        "B2",
+        "B3",
+        "S1",
+        "S2",
+        "S3",
+        "P1",
+        "P2",
+        "P3",
+        "P4"
+      ],
+      "metadata": {
+        "description": "Describes plan's pricing tier and capacity. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/"
+      }
+    },
+    "OtamesiArmStorage99Type": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_ZRS",
+        "Standard_GRS",
+        "Standard_RAGRS",
+        "Premium_LRS"
+      ]
+    }
+  },
+  "variables": {
+    "OtamesiArmStorage99Name": "otamesiarmstorage99",
+    "OtamesiArmWeb99Name": "[concat('OtamesiArmWeb99', uniqueString(resourceGroup().id))]",
+    "OtamesiArmWebFuncName": "[concat('OtamesiArmWebFunc', uniqueString(resourceGroup().id))]",
+    "subscriptionId": "6b118375-041d-4dab-8a6d-ec6c8e8d5dfe",
+    "serverFarmResourceGroup": "dev-aoki-arm01",
+    "hostingEnvironment": ""
+  },
+  "resources": [
+    {
+      "name": "[variables('OtamesiArmStorage99Name')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-01-01",
+      "sku": {
+        "name": "[parameters('OtamesiArmStorage99Type')]"
+      },
+      "dependsOn": [],
+      "tags": {
+        "displayName": "OtamesiArmStorage99"
+      },
+      "kind": "Storage"
+    },
+    {
+      "name": "[parameters('OtamesiArmPlan99Name')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-08-01",
+      "sku": {
+        "name": "[parameters('OtamesiArmPlan99SkuName')]"
+      },
+      "dependsOn": [],
+      "tags": {
+        "displayName": "OtamesiArmPlan99"
+      },
+      "properties": {
+        "name": "[parameters('OtamesiArmPlan99Name')]",
+        "numberOfWorkers": 1
+      }
+    },
+    {
+      "name": "[variables('OtamesiArmWeb99Name')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-08-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('OtamesiArmPlan99Name'))]"
+      ],
+      "tags": {
+        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', parameters('OtamesiArmPlan99Name')))]": "Resource",
+        "displayName": "OtamesiArmWeb99"
+      },
+      "properties": {
+        "name": "[variables('OtamesiArmWeb99Name')]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "itbhoge1",
+              "value": "hogehoge1"
+            },
+            {
+              "name": "itbhoge2",
+              "value": "hogehoge2"
+            }
+          ],
+          "connectionStrings": [
+            {
+              "name": "itbconn",
+              "connectionString": "Server=itbserver;Database=itbdb;Trusted_Connection=True;",
+              "type": 2
+            }
+          ],
+          "alwaysOn": true
+        },
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('OtamesiArmPlan99Name'))]"
+      }
+    },
+    {
+      "name": "[variables('OtamesiArmWebFuncName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-08-01",
+      "kind": "functionapp",
+      "tags": {
+        "[concat('hidden-related:', '/subscriptions/', variables('subscriptionId'),'/resourcegroups/', variables('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('OtamesiArmPlan99Name'))]": "empty"
+      },
+      "properties": {
+        "name": "[variables('OtamesiArmWebFuncName')]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "AzureWebJobsDashboard",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('OtamesiArmStorage99Name'),';AccountKey=',listKeys(resourceId('6b118375-041d-4dab-8a6d-ec6c8e8d5dfe','dev-aoki-arm01','Microsoft.Storage/storageAccounts', variables('OtamesiArmStorage99Name')), '2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('OtamesiArmStorage99Name'),';AccountKey=',listKeys(resourceId('6b118375-041d-4dab-8a6d-ec6c8e8d5dfe','dev-aoki-arm01','Microsoft.Storage/storageAccounts', variables('OtamesiArmStorage99Name')), '2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~1"
+            },
+            {
+              "name": "WEBSITE_NODE_DEFAULT_VERSION",
+              "value": "6.5.0"
+            }
+          ],
+          "alwaysOn": true
+        },
+        "clientAffinityEnabled": false,
+        "serverFarmId": "[concat('/subscriptions/', variables('subscriptionId'),'/resourcegroups/', variables('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('OtamesiArmPlan99Name'))]",
+        "hostingEnvironment": "[variables('hostingEnvironment')]"
+      }
+    }
+  ]
+}
